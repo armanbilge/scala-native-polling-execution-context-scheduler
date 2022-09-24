@@ -1,0 +1,48 @@
+/*
+ * Copyright 2022 Scala Native Polling Execution Context Scheduler Working Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.armanbilge.snpecs
+
+trait Polling {
+
+  /** Registers a callback to be notified of read- and write-ready events on a file descriptor.
+    * Produces a runnable which unregisters the file descriptor.
+    *
+    *   1. It is the responsibility of the caller to set the file descriptor to non-blocking mode.
+    *   1. It is the responsibility of the caller to unregister the file descriptor when they are
+    *      done. There is nobody to cleanup after your mess.
+    *   1. A file descriptor should be registered at most once. To modify a registration, you must
+    *      unregister and re-register the file descriptor.
+    *   1. The callback may be invoked "spuriously" claiming that a file descriptor is read- or
+    *      write-ready when in fact it is not. You should be prepared to handle this.
+    *   1. The callback will be invoked at least once when the file descriptor transitions from
+    *      blocked to read- or write-ready. You may additionally receive zero or more reminders of
+    *      its readiness. However, you should not expect any further callbacks until after the file
+    *      descriptor has become blocked again.
+    */
+  def register(fileDescriptor: Int, readReady: Boolean, writeReady: Boolean)(
+      cb: Polling.Callback
+  ): Runnable
+
+}
+
+object Polling {
+
+  trait Callback {
+    def apply(readReady: Boolean, writeReady: Boolean): Unit
+  }
+
+}
