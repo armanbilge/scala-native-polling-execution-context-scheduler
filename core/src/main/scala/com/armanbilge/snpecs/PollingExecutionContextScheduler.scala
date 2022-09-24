@@ -41,7 +41,7 @@ object PollingExecutionContextScheduler {
       false
     }
 
-  /** '''DO NOT USE THIS!!!''' Instead you should request an [[PollingExecutionContextScheduler]] as
+  /** '''DO NOT USE THIS!!!''' Instead you should request a [[PollingExecutionContextScheduler]] as
     * an explicit or implicit parameter of your API.
     *
     * There is exactly one situation to explicitly rely on the [[global]]: you are implementing JDK

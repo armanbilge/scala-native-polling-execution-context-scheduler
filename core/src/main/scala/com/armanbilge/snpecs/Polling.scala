@@ -30,7 +30,7 @@ trait Polling {
     *      write-ready when in fact it is not. You should be prepared to handle this.
     *   1. The callback will be invoked at least once when the file descriptor transitions from
     *      blocked to read- or write-ready. You may additionally receive zero or more reminders of
-    *      its readiness. However, you should not expect any further callbacks until after the file
+    *      its readiness. However, you should not rely on any further callbacks until after the file
     *      descriptor has become blocked again.
     */
   def register(fileDescriptor: Int, readReady: Boolean, writeReady: Boolean)(
